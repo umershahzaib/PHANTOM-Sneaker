@@ -11,14 +11,21 @@ import LoadingScreen from '@/components/LoadingScreen'
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const timer = setTimeout(() => {
       setLoading(false)
     }, 1500)
 
     return () => clearTimeout(timer)
   }, [])
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null
+  }
 
   if (loading) {
     return <LoadingScreen />
